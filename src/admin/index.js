@@ -4,7 +4,7 @@ app.controller("Rest", function ($scope, $cookies, $http, $q, $compile) {
     
     var dataAtual = new Date(); // Obtém a data atual
     var diaAtual = dataAtual.getDay()
-    var mesAtual = dataAtual.getMonth(); // Obtém o mês atual (0-11)
+    var mesAtual = dataAtual.getMonth() + 1; // Obtém o mês atual (0-11)
     var anoAtual = dataAtual.getFullYear(); // Obtém o ano atual
     var diaCadastroAgenda = undefined;
     $scope.mesDescricao = retornaMes(mesAtual);
@@ -18,8 +18,8 @@ app.controller("Rest", function ($scope, $cookies, $http, $q, $compile) {
         $('#btE').prop("disabled", true);
         $('#btD').prop("disabled", true);
         mesAtual--;
-        if (mesAtual < 0) {
-            mesAtual = 11;
+        if (mesAtual < 1) {
+            mesAtual = 12;
             anoAtual--;
         }
         criarCalendario()
@@ -34,8 +34,8 @@ app.controller("Rest", function ($scope, $cookies, $http, $q, $compile) {
         $('#btE').prop("disabled", true);
         $('#btD').prop("disabled", true);
         mesAtual++;
-        if (mesAtual > 11) {
-            mesAtual = 0;
+        if (mesAtual > 12) {
+            mesAtual = 1;
             anoAtual++;
         }
         criarCalendario()
@@ -52,7 +52,7 @@ app.controller("Rest", function ($scope, $cookies, $http, $q, $compile) {
           url: hostBack+"/api/agenda/adicionarAgendamento",
           headers: {'Authorization': authorization, 'DiasSemana': $('#checkBox').is(':checked')},
           data: {
-            dataAgendamento: moment(anoAtual+'-'+(mesAtual+1).toString().padStart(2, '0')+'-'+diaCadastroAgenda.toString().padStart(2, '0'))
+            dataAgendamento: moment(anoAtual+'-'+(mesAtual).toString().padStart(2, '0')+'-'+diaCadastroAgenda.toString().padStart(2, '0'))
           }
         }
         $http(req).then(function (data) {
@@ -68,13 +68,13 @@ app.controller("Rest", function ($scope, $cookies, $http, $q, $compile) {
     };
 
     function retornaMes(mes) {
-        mes = mes+1;
-        if (mes < 1 || mes > 12) {
+        mes = mes;
+        if (mes < 0 || mes > 11) {
             return "Mês inválido";
         }
     
         const meses = [
-            "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho",
+            "","Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho",
             "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
         ];
     
@@ -85,8 +85,8 @@ app.controller("Rest", function ($scope, $cookies, $http, $q, $compile) {
     function criarCalendario() {
         return new Promise(function(resolve, reject) {
             var calendario = [];
-            var primeiroDia = new Date(anoAtual, mesAtual, 1).getDay();
-            var primeiroDiaProximoMes = new Date(anoAtual, mesAtual+1, 1);
+            var primeiroDia = new Date(anoAtual, mesAtual-1, 1).getDay();
+            var primeiroDiaProximoMes = new Date(anoAtual, mesAtual-1, 1);
             var ultimoDia = new Date(primeiroDiaProximoMes - 1).getDate(); // Obtém o último dia do mês
             var linha = [];
             for (var i = 0; i < primeiroDia; i++) {
@@ -149,7 +149,7 @@ app.controller("Rest", function ($scope, $cookies, $http, $q, $compile) {
                 var dia = data.format('DD');
                 var mes = data.format('MM');
                 var ano = data.format('YYYY');
-                if(parseInt(mes) == parseInt(mesAtual+1) && parseInt(ano) == parseInt(anoAtual)){
+                if(parseInt(mes) == parseInt(mesAtual) && parseInt(ano) == parseInt(anoAtual)){
                     var minhaDiv = $('<div>', {class:'conteudo_obs'});
                     if(element.confirmacao){
                         var meuH1 = $('<h3>', { text: 'Agendado - '+element.nomeUser, class:'h3true' });
@@ -217,6 +217,8 @@ app.controller("Rest", function ($scope, $cookies, $http, $q, $compile) {
 
     $scope.checkAgendamento = function(id, index){
         var authorization = $cookies.get('autorization');
+        $('#check').removeClass("bi bi-check-all pointer");
+        $('#check').addClass("spinner-border");
     
         var req = {
           method: "POST",
@@ -233,8 +235,10 @@ app.controller("Rest", function ($scope, $cookies, $http, $q, $compile) {
                 }
             })
             $('#'+parseInt(dia)+' .conteudo_obs h3').removeClass('h3false').addClass('h3true');
+            $('#check').removeClass("spinner-border");
         },function error(){
-            
+            $('#check').removeClass("spinner-border");
+            $('#check').addClass("bi bi-check-all pointer");
         });
     }
 });
