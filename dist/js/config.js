@@ -1,2 +1,2 @@
-var hostFront = 'http://192.168.0.114:8082';
-var hostBack = 'http://192.168.0.114:8081';
+var hostFront = 'http://localhost:8082';
+var hostBack = 'http://localhost:8081';

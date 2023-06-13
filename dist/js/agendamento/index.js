@@ -2,6 +2,17 @@ var app = angular.module("aplicacao", ['ngCookies']);
 
 app.controller("Rest", function ($scope, $cookies, $http, $q, $compile) {
     
+    const socket = new SockJS('http://localhost:8081/websocket');
+    const stompClient = Stomp.over(socket);
+
+    stompClient.connect({}, function (frame) {
+        console.log('Connected to WebSocket');
+
+        stompClient.subscribe('/topic/messages', function (message) {
+            insereDadosTabela(JSON.parse(message.body));
+        });
+    });
+    
     var dataAtual = new Date(); // Obtém a data atual
     var diaAtual = dataAtual.getDay()
     var mesAtual = dataAtual.getMonth(); // Obtém o mês atual (0-11)
@@ -58,7 +69,6 @@ app.controller("Rest", function ($scope, $cookies, $http, $q, $compile) {
             }
             $http(req).then(function (data) {
                 criarCalendario();
-                buscarConteudo()
                 if($('#checkBox').is(':checked')){
                     $('#checkBox').prop('checked', false);
                 }
