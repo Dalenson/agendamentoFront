@@ -69,7 +69,7 @@ app.controller("Rest", function ($scope, $cookies, $http, $q, $compile) {
 
     function retornaMes(mes) {
         mes = mes;
-        if (mes < 0 || mes > 11) {
+        if (mes < 1 || mes > 12) {
             return "Mês inválido";
         }
     

@@ -9,13 +9,14 @@ app.controller("Rest", function ($scope, $cookies, $http, $q, $compile) {
         console.log('Connected to WebSocket');
 
         stompClient.subscribe('/topic/messages', function (message) {
+            removeDadosTabela();
             insereDadosTabela(JSON.parse(message.body));
         });
     });
     
     var dataAtual = new Date(); // Obtém a data atual
     var diaAtual = dataAtual.getDay()
-    var mesAtual = dataAtual.getMonth(); // Obtém o mês atual (0-11)
+    var mesAtual = dataAtual.getMonth()+1; // Obtém o mês atual (0-11)
     var anoAtual = dataAtual.getFullYear(); // Obtém o ano atual
     var diaCadastroAgenda = undefined;
     $scope.mesDescricao = retornaMes(mesAtual);
@@ -29,14 +30,14 @@ app.controller("Rest", function ($scope, $cookies, $http, $q, $compile) {
         $('#btE').prop("disabled", true);
         $('#btD').prop("disabled", true);
         mesAtual--;
-        if (mesAtual < 0) {
-            mesAtual = 11;
+        if (mesAtual < 1) {
+            mesAtual = 12;
             anoAtual--;
         }
         criarCalendario()
         .then(function() {
-            $scope.mesDescricao = retornaMes(mesAtual);
             insereDadosTabela($scope.dados);
+            watchTagCreation();
         });
     }
 
@@ -45,14 +46,14 @@ app.controller("Rest", function ($scope, $cookies, $http, $q, $compile) {
         $('#btE').prop("disabled", true);
         $('#btD').prop("disabled", true);
         mesAtual++;
-        if (mesAtual > 11) {
-            mesAtual = 0;
+        if (mesAtual > 12) {
+            mesAtual = 1;
             anoAtual++;
         }
        criarCalendario()
         .then(function() {
-            $scope.mesDescricao = retornaMes(mesAtual);
             insereDadosTabela($scope.dados);
+            watchTagCreation();
         });
     }
 
@@ -64,11 +65,12 @@ app.controller("Rest", function ($scope, $cookies, $http, $q, $compile) {
             url: hostBack+"/api/agenda/adicionarAgendamento",
             headers: {'Authorization': authorization, 'DiasSemana': $('#checkBox').is(':checked')},
             data: {
-                dataAgendamento: moment(anoAtual+'-'+(mesAtual+1).toString().padStart(2, '0')+'-'+$scope.diaCadastroAgenda.toString().padStart(2, '0'))
+                dataAgendamento: moment(anoAtual+'-'+(mesAtual).toString().padStart(2, '0')+'-'+$scope.diaCadastroAgenda.toString().padStart(2, '0'))
             }
             }
             $http(req).then(function (data) {
-                criarCalendario();
+                // criarCalendario();
+                buscaDados();
                 if($('#checkBox').is(':checked')){
                     $('#checkBox').prop('checked', false);
                 }
@@ -81,13 +83,13 @@ app.controller("Rest", function ($scope, $cookies, $http, $q, $compile) {
     };
 
     function retornaMes(mes) {
-        mes = mes+1;
+        mes = mes;
         if (mes < 1 || mes > 12) {
             return "Mês inválido";
         }
     
         const meses = [
-            "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho",
+            "","Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho",
             "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
         ];
     
@@ -97,11 +99,13 @@ app.controller("Rest", function ($scope, $cookies, $http, $q, $compile) {
       // Função para criar a estrutura de dados do calendário
     function criarCalendario() {
         return new Promise(function(resolve, reject) {
+            $scope.mesDescricao = retornaMes(mesAtual);
             var calendario = [];
-            var primeiroDia = new Date(anoAtual, mesAtual, 1).getDay();
-            var primeiroDiaProximoMes = new Date(anoAtual, mesAtual+1, 1);
+            var primeiroDia = new Date(anoAtual, mesAtual-1, 1).getDay();
+            var primeiroDiaProximoMes = new Date(anoAtual, mesAtual-1, 1);
             var ultimoDia = new Date(primeiroDiaProximoMes - 1).getDate(); // Obtém o último dia do mês
             var linha = [];
+
             for (var i = 0; i < primeiroDia; i++) {
                 linha.push(' ');
             }
@@ -142,6 +146,7 @@ app.controller("Rest", function ($scope, $cookies, $http, $q, $compile) {
           headers: {'Authorization': authorization},
         }
         $http(req).then(function (data) {
+            removeDadosTabela();
             deferred.resolve(data)
             $scope.dados = data.data;
             insereDadosTabela(data.data)
@@ -163,7 +168,7 @@ app.controller("Rest", function ($scope, $cookies, $http, $q, $compile) {
                 var dia = data.format('DD');
                 var mes = data.format('MM');
                 var ano = data.format('YYYY');
-                if(parseInt(mes) == parseInt(mesAtual+1) && parseInt(ano) == parseInt(anoAtual)){
+                if(parseInt(mes) == parseInt(mesAtual) && parseInt(ano) == parseInt(anoAtual)){
                     var minhaDiv = $('<div>', {class:'conteudo_obs'});
                     if(element.confirmacao){
                         var meuH1 = $('<h3>', { text: 'Agendado', class:'h3true', 'data-info': element.id });
@@ -258,5 +263,34 @@ app.controller("Rest", function ($scope, $cookies, $http, $q, $compile) {
             $('#checkBox').prop('checked', false);
         });
     }
+
+    function removeDadosTabela(){
+        $(".conteudo_obs").remove();
+    }
+
+    function adicionaNomeSemanaCalendario() {
+        var dias = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"];
+        var colunas = $(".conteudo");
+
+        for (var i = 0; i < colunas.length; i++) {
+          var dia = dias[i % 7]; 
+          var h1Element = $("<h1></h1>");
+          h1Element.text(dia);
+          
+          $(colunas[i]).prepend(h1Element);
+        }
+    }
+
+      
+
+    function watchTagCreation() {
+        var intervalId = setInterval(function() {
+          if ($(".conteudo").length > 0) {
+            clearInterval(intervalId);
+            adicionaNomeSemanaCalendario();
+          }
+        }, 10);
+      }
+    watchTagCreation();
 });
 
