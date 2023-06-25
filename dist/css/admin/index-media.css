@@ -1,0 +1,102 @@
+@media (max-width: 600px) {
+  .page {
+    flex-direction: column;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    width: 100%;
+    height: auto;
+  }
+  .left {
+    width: 100%;
+    height: 50px;
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+  }
+  .right {
+    width: 100%;
+    position: relative;
+    /* overflow-x: auto; */
+  }
+  .tabela {
+    width: 100%; /* Largura da tabela igual a 100% da div */
+    table-layout: fixed;
+    max-width: 90%;
+  }
+  h1 {
+    font-size: 15px;
+  }
+  h2 {
+    font-size: 15px;
+  }
+  .botleft {
+    display: none;
+  }
+  .botleft h1 {
+    padding: 10px;
+  }
+  .topleft {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0px;
+    height: 100px;
+    background-color: #2B818C;
+    margin-bottom: 15px;
+  }
+  #calendario tr th {
+    font-size: 10px;
+    text-align: center; /* Centraliza o texto horizontalmente */
+    vertical-align: middle;
+  }
+  .h3false {
+    font-size: 10px;
+  }
+  .h3true {
+    font-size: 10px;
+  }
+  .bi-person-circle {
+    font-size: 2rem;
+    padding: 0px 15px;
+  }
+  .rightHead {
+    width: 100%;
+    background-color: white;
+    margin-top: 30px;
+  }
+  .rightHead h1 {
+    color: black;
+    margin: 20px 0px 40px 0px;
+  }
+  .botPhoneMenu {
+    display: flex;
+    width: 100%;
+    height: 50px;
+    background-color: #2B818C;
+    position: fixed;
+    bottom: 0;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    align-items: center;
+  }
+  .botMenu {
+    color: white;
+    font-size: 30px;
+  }
+  #calendario tr td {
+    height: 50px;
+  }
+  .waveBot {
+    position: fixed;
+    bottom: 0;
+    display: flex;
+  }
+}

@@ -107,7 +107,7 @@ app.controller("Rest", function ($scope, $cookies, $http, $q, $compile) {
             var linha = [];
 
             for (var i = 0; i < primeiroDia; i++) {
-                linha.push(' ');
+                linha.push(' - ');
             }
 
             for (var day = 1; day <= ultimoDia; day++) {
@@ -124,7 +124,7 @@ app.controller("Rest", function ($scope, $cookies, $http, $q, $compile) {
             }
             ultimaColuna = -calendario[calendario.length-1].length + 7;
             for(var i = 0; i < ultimaColuna; i++){
-                calendario[calendario.length-1].push(' ');
+                calendario[calendario.length-1].push(' - ');
             }
             $scope.calendario = calendario;
             resolve();
@@ -157,35 +157,61 @@ app.controller("Rest", function ($scope, $cookies, $http, $q, $compile) {
         return deferred.promise;
     }
 
+    // function insereDadosTabela(dados){
+    //         // var enumAgendamento = {
+    //         //     0: 'Agu. Confir',
+    //         //     1: 'Confirmado',
+    //         //     2: 'Cancelado'
+    //         //   };
+    //         dados.forEach(element => {
+    //             var data = moment(element.dataAgendamento, 'YYYY-MM-DD');
+    //             var dia = data.format('DD');
+    //             var mes = data.format('MM');
+    //             var ano = data.format('YYYY');
+    //             if(parseInt(mes) == parseInt(mesAtual) && parseInt(ano) == parseInt(anoAtual)){
+    //                 var minhaDiv = $('<div>', {class:'conteudo_obs'});
+    //                 if(element.confirmacao){
+    //                     var meuH1 = $('<h3>', { text: 'Agendado', class:'h3true', 'data-info': element.id });
+    //                 }else{
+    //                     var meuH1 = $('<h3>', { text: 'Agendado', class:'h3false', 'data-info': element.id  });
+    //                 }
+    //                 minhaDiv.append(meuH1);
+    //                 $('#'+parseInt(dia)).append(minhaDiv);
+    //             }
+    //         });
+    //     $('[id][id=" "]').css('color', 'red').parent().removeAttr('data-target');
+    //     $('[id][id=" "]').css('color', 'red').parent().css('background-color', '#80808045');
+    //     $('[id][id=" "]').css('color', 'red').parent().removeAttr('ng-click');
+    //     $('[id][id=" "]').css('color', 'red').parent().css('cursor', 'auto');
+    //     $('#btE').prop("disabled", false);
+    //     $('#btD').prop("disabled", false);
+    // }
+
     function insereDadosTabela(dados){
-            // var enumAgendamento = {
-            //     0: 'Agu. Confir',
-            //     1: 'Confirmado',
-            //     2: 'Cancelado'
-            //   };
             dados.forEach(element => {
-                var data = moment(element.dataAgendamento, 'YYYY-MM-DD');
-                var dia = data.format('DD');
-                var mes = data.format('MM');
-                var ano = data.format('YYYY');
+            var data = moment(element.dataAgendamento, 'YYYY-MM-DD');
+            var dia = data.format('DD');
+            var mes = data.format('MM');
+            var ano = data.format('YYYY');
                 if(parseInt(mes) == parseInt(mesAtual) && parseInt(ano) == parseInt(anoAtual)){
                     var minhaDiv = $('<div>', {class:'conteudo_obs'});
                     if(element.confirmacao){
-                        var meuH1 = $('<h3>', { text: 'Agendado', class:'h3true', 'data-info': element.id });
+                        var meuH1 = $('<span class="anotacao-green">');
                     }else{
-                        var meuH1 = $('<h3>', { text: 'Agendado', class:'h3false', 'data-info': element.id  });
+                        var meuH1 = $('<span class="anotacao">');
                     }
                     minhaDiv.append(meuH1);
                     $('#'+parseInt(dia)).append(minhaDiv);
                 }
             });
-        $('[id][id=" "]').css('color', 'red').parent().removeAttr('data-target');
-        $('[id][id=" "]').css('color', 'red').parent().css('background-color', '#80808045');
-        $('[id][id=" "]').css('color', 'red').parent().removeAttr('ng-click');
-        $('[id][id=" "]').css('color', 'red').parent().css('cursor', 'auto');
+        $('[id][id=" - "]').css('color', 'red').parent().removeAttr('data-target');
+        $('[id][id=" - "]').css('color', 'red').parent().css('background-color', '#80808045');
+        $('[id][id=" - "]').css('color', 'red').parent().removeAttr('ng-click');
+        $('[id][id=" - "]').css('color', 'red').parent().css('cursor', 'auto');
         $('#btE').prop("disabled", false);
         $('#btD').prop("disabled", false);
     }
+    
 
     $scope.setarDia = function(diaCadastro){
         if($('#'+diaCadastro+' .conteudo_obs').length){
@@ -198,6 +224,7 @@ app.controller("Rest", function ($scope, $cookies, $http, $q, $compile) {
             $('#corpoModal').show();
         }
         $scope.diaCadastroAgenda = diaCadastro;
+        $('#myModal').modal('show');
     }
 
     function buscaDadosUser() {
