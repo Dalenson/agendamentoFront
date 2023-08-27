@@ -3,13 +3,13 @@
 Serviço desenvolvido para praticar o desenvolvimento de aplicações WEB.
 ## Stack utilizada
 
-**Front-end:** 
+**Front-end:** </br>
 Express: Utilizado como framework web para a construção da estrutura do aplicativo.</br>
-Gulp: Utilizado como task runner para automatizar tarefas de construção e otimização.
-Sass: Utilizado como pré-processador de CSS para facilitar a estilização e manutenção do design.
-Cors: Utilizado para lidar com políticas de segurança de origem cruzada e permitir comunicação entre diferentes domínios.
-Moment: Utilizado para manipulação e formatação de datas e horários.
-Cookie-parser: Utilizado para analisar cookies HTTP no servidor.
+Gulp: Utilizado como task runner para automatizar tarefas de construção e otimização.</br>
+Sass: Utilizado como pré-processador de CSS para facilitar a estilização e manutenção do design.</br>
+Cors: Utilizado para lidar com políticas de segurança de origem cruzada e permitir comunicação entre diferentes domínios.</br>
+Moment: Utilizado para manipulação e formatação de datas e horários.</br>
+Cookie-parser: Utilizado para analisar cookies HTTP no servidor.</br>
 WebSockets: Através do uso de WebSockets, o aplicativo "Fisio" é capaz de estabelecer comunicações bidirecionais em tempo real, possibilitando interações dinâmicas e atualizações instantâneas entre o servidor e o cliente.
 
 Tela de login e de agendamento!
