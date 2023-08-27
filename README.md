@@ -22,3 +22,7 @@ Tela de login e de agendamento!
 O sistema tinha por finalidade realizar o cadastro de usuários onde os mesmos teriam como adicionar agendamentos e realizar o acompanhamento deles pelo sistema.
 O sistema também teria uma pagina administradora onde o admin conseguiria aceitar o agendamente ou rejeitar.
 Foi realizado também a implementação de um Web-Socket para mandar a comunicação com relação as datas iguais para todos os usuarios conectados ao servidor, para que não tivesse problemas quanto a visualização de dias vagos que não estariam vagos naquele momento.
+
+
+# Protótipo
+![image](https://github.com/Dalenson/agendamentoFront/assets/108817919/1d49113f-2300-4b2c-8e97-633406444d2e)
