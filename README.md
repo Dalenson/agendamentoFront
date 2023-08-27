@@ -12,10 +12,9 @@ Moment: Utilizado para manipulação e formatação de datas e horários.
 Cookie-parser: Utilizado para analisar cookies HTTP no servidor.
 WebSockets: Através do uso de WebSockets, o aplicativo "Fisio" é capaz de estabelecer comunicações bidirecionais em tempo real, possibilitando interações dinâmicas e atualizações instantâneas entre o servidor e o cliente.
 
-LOGIN:
-![image](https://github.com/Dalenson/agendamentoFront/assets/108817919/dc734e5a-743e-46f8-96b5-aaeaf1464543)
+Tela de login e de agendamento!
 
-Listagem dos agendamentos
+![image](https://github.com/Dalenson/agendamentoFront/assets/108817919/dc734e5a-743e-46f8-96b5-aaeaf1464543)
 ![image](https://github.com/Dalenson/agendamentoFront/assets/108817919/aa203bf6-a73f-4364-aa4e-82d9cda3b052)
 
 
